@@ -15,6 +15,8 @@
 -->
 # Pulse Unbound Cookbook
 
+[![CodeClimate](https://codeclimate.com/github/pulseenergy/cookbook-pulse_unbound/badges/gpa.svg)](https://codeclimate.com/github/pulseenergy/cookbook-pulse_unbound) [![License](https://img.shields.io/badge/license-Apache_2-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
+
 This cookbook installs [Unbound](https://www.nlnetlabs.nl/projects/unbound/), a validating, recursive, and caching DNS server.
 
 The default configuration provides a simple caching DNS resolver that respects TTL values provided by authoritative nameservers. Advanced configuration enables routing of DNS requests through the use of stub zones and forward zones.
