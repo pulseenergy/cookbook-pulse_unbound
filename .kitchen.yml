@@ -1,0 +1,17 @@
+---
+driver:
+  name: vagrant
+  vm_hostname: kitchen-pulse-unbound
+
+provisioner:
+  name: chef_zero
+  require_chef_omnibus: 12.8.1
+
+platforms:
+  - name: ubuntu-12.04
+  - name: ubuntu-14.04
+
+suites:
+  - name: default
+    run_list:
+      - recipe[pulse_unbound]

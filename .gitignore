@@ -1,0 +1,11 @@
+# Berkshelf
+Berksfile.lock
+
+# Bundler
+Gemfile.lock
+bin/*
+.bundle/*
+
+# Test Kitchen
+.kitchen/
+.kitchen.local.yml
