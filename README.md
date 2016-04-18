@@ -68,6 +68,24 @@ override['pulse_unbound']['forward_zone']['.'] = {
 }
 ```
 
+### Interfaces and Access Controls
+
+```
+node.override['pulse_unbound']['interface'] = {
+  '127.0.0.1' => true,
+  '172.17.0.1' => true,
+}
+```
+
+Non-localhost interfaces must be supported by additional access control rules.
+
+```
+node.override['pulse_unbound']['access_control'] = {
+  '127.0.0.1/8' => 'allow',
+  '172.16.0.1/16' => 'allow',
+}
+```
+
 <!-- I feel a bit nervous about including an example that affects the root domain, because any slight misconfiguration can cripple the system. -->
 
 ## License and Authors

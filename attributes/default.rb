@@ -27,6 +27,9 @@ default['pulse_unbound']['forward_zone'] = Hash.new
 # If no interfaces are specified, localhost (IPv4 and IPv6) will be used.
 default['pulse_unbound']['interface'] = Hash.new
 
+# If no netblocks are specified, then Unbound will default to allowing only localhost and denying all other networks.
+default['pulse_unbound']['access_control'] = Hash.new
+
 # Unbound will respect the TTL value provided by nameservers, up to cache_max_ttl
 # If you want to disable caching for private zones, change your SOA record instead of changing this value.
 default['pulse_unbound']['cache_max_ttl'] = 86400

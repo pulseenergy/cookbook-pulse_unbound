@@ -40,6 +40,7 @@ config = {
     'local-zone' => [],
     'local-data' => [],
     'interface' => node['pulse_unbound']['interface'].select { |interface, enable| enable }.keys,
+    'access-control' => node['pulse_unbound']['access_control'].map { |x,y| "\"#{x}\" \"#{y}\"" },
   },
   'stub-zone' => [],
   'forward-zone' => [],

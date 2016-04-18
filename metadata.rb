@@ -3,7 +3,7 @@ maintainer       'Nic Waller'
 maintainer_email 'nicholas.waller@enernoc.com'
 license          'All rights reserved'
 description      'Installs Unbound caching DNS server'
-version          '0.5.0'
+version          '0.6.0'
 
 supports         'ubuntu', '>= 12.04'
 

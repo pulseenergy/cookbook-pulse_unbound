@@ -1,3 +1,7 @@
+# 0.6.0
+
+- Allow custom specification of access-control rules
+
 # 0.5.0
 
 - Allow custom specification of listening interfaces

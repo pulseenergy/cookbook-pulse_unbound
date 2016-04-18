@@ -24,3 +24,5 @@ suites:
       pulse_unbound:
         interface:
           127.0.0.1: true
+        access_control:
+          127.0.0.1/8: allow
