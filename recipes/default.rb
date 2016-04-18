@@ -39,6 +39,7 @@ config = {
     'private-domain' => [],
     'local-zone' => [],
     'local-data' => [],
+    'interface' => node['pulse_unbound']['interface'].select { |interface, enable| enable }.keys,
   },
   'stub-zone' => [],
   'forward-zone' => [],

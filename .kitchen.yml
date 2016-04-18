@@ -17,3 +17,10 @@ suites:
   - name: default
     run_list:
       - recipe[pulse_unbound]
+  - name: custom_interfaces
+    run_list:
+      - recipe[pulse_unbound]
+    attributes:
+      pulse_unbound:
+        interface:
+          127.0.0.1: true
