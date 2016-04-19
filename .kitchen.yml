@@ -23,6 +23,7 @@ suites:
     attributes:
       pulse_unbound:
         interface:
-          127.0.0.1: true
+          0.0.0.0: true
         access_control:
           127.0.0.1/8: allow
+          0.0.0.0/0: allow

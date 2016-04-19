@@ -27,45 +27,6 @@ directory '/etc/unbound' do
   action :create
 end
 
-config = {
-  'server' => {
-    'cache-max-ttl' => node['pulse_unbound']['cache_max_ttl'],
-    'do-ip6' => false,
-    'username' => 'unbound',
-    'logfile' => '/var/log/unbound',
-    'use-syslog' => false,
-    'module-config' => 'iterator', # This disables DNSSEC. DNSSEC does not work with forwarding.
-    'do-not-query-localhost' => node['pulse_unbound']['do_not_query_localhost'],
-    'private-domain' => [],
-    'local-zone' => [],
-    'local-data' => [],
-    'interface' => node['pulse_unbound']['interface'].select { |interface, enable| enable }.keys,
-    'access-control' => node['pulse_unbound']['access_control'].map { |x,y| "\"#{x}\" \"#{y}\"" },
-  },
-  'stub-zone' => [],
-  'forward-zone' => [],
-}
-
-node[cookbook_name]['stub_zone'].each { |zone, details|
-  config['stub-zone'].push({
-    'name' => zone,
-    'stub-host' => details['stub_host'] || [],
-    'stub-addr' => details['stub_addr'] || [],
-    'stub-prime' => details['stub_prime'] || false,
-    #'stub-first' => details['stub_first'] || false, # Not supported by NSD 3.x
-  })
-}
-
-node[cookbook_name]['forward_zone'].each { |zone, details|
-  # TODO: add sanity check to help people avoid breaking root DNS resolution if forward-addr is omitted
-  config['forward-zone'].push({
-    'name' => zone,
-    'forward-host' => details['forward_host'] || [],
-    'forward-addr' => details['forward_addr'] || [],
-    #'forward-first' => details['forward_first'] || false, # Not supported by NSD 3.x
-  })
-}
-
 # Writing one big config file is the easiest way to ensure that the configuration
 # always represents the latest attribute values, even when things are removed.
 # That's why I'm choosing not to use the "conf.d" model here.
@@ -75,7 +36,48 @@ file '/etc/unbound/unbound.conf' do
   mode '0444'
   owner 'root'
   group 'root'
-  content render_unbound_configfile(config)
+  content lazy {
+    config = {
+      'server' => {
+        'cache-max-ttl' => node[cookbook_name]['cache_max_ttl'],
+        'do-ip6' => false,
+        'username' => 'unbound',
+        'logfile' => '/var/log/unbound',
+        'use-syslog' => false,
+        'module-config' => 'iterator', # This disables DNSSEC. DNSSEC does not work with forwarding.
+        'do-not-query-localhost' => node[cookbook_name]['do_not_query_localhost'],
+        'private-domain' => [],
+        'local-zone' => [],
+        'local-data' => [],
+        'interface' => node[cookbook_name]['interface'].select { |interface, enable| enable }.keys,
+        'access-control' => node[cookbook_name]['access_control'].map { |x,y| "\"#{x}\" \"#{y}\"" },
+      },
+      'stub-zone' => [],
+      'forward-zone' => [],
+    }
+
+    node[cookbook_name]['stub_zone'].each { |zone, details|
+      config['stub-zone'].push({
+        'name' => zone,
+        'stub-host' => details['stub_host'] || [],
+        'stub-addr' => details['stub_addr'] || [],
+        'stub-prime' => details['stub_prime'] || false,
+        #'stub-first' => details['stub_first'] || false, # Not supported by NSD 3.x
+      })
+    }
+
+    node[cookbook_name]['forward_zone'].each { |zone, details|
+      # TODO: add sanity check to help people avoid breaking root DNS resolution if forward-addr is omitted
+      config['forward-zone'].push({
+        'name' => zone,
+        'forward-host' => details['forward_host'] || [],
+        'forward-addr' => details['forward_addr'] || [],
+        #'forward-first' => details['forward_first'] || false, # Not supported by NSD 3.x
+      })
+    }
+
+    render_unbound_configfile(config)
+  }
   notifies :reload, 'service[unbound]'
 end
 
